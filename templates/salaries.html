@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Salary Insights</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #667eea;
+      --secondary: #764ba2;
+      --text-light: #fff;
+      --card-bg: rgba(255, 255, 255, 0.15);
+      --panel-bg: rgba(255, 255, 255, 0.95);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      min-height: 100vh;
+      color: var(--text-light);
+    }
+
+    .navbar {
+      backdrop-filter: blur(20px);
+      background-color: var(--card-bg);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+
+    .nav-links a {
+      margin-left: 1.5rem;
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+    }
+
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .salary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .salary-item {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--text-light);
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .salary-item:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .chart-wrapper {
+      background: var(--panel-bg);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    canvas {
+      width: 100% !important;
+      max-height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">📊 Job Market Intelligence</div>
+    <nav class="nav-links">
+      <a href="/">Dashboard</a>
+      <a href="/skills">Skills</a>
+      <a href="/salaries">Salaries</a>
+      <a href="/companies">Companies</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="section-title">💸 Average Salary by Location</div>
+    <section class="glass-card">
+      <div class="salary-grid">
+        {% for location in locations %}
+          <div class="salary-item">
+            <div>{{ location.location }}</div>
+            <div>${{ "{:,}".format(location.avg_salary or 0) }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <div class="section-title">🏙️ Key Location Comparison</div>
+    <section class="glass-card">
+      {% if comparison %}
+        <div class="chart-wrapper">
+          <canvas id="salaryChart"></canvas>
+        </div>
+      {% else %}
+        <p>No comparison data available.</p>
+      {% endif %}
+    </section>
+  </main>
+
+  {% if comparison %}
+  <script>
+    const ctx = document.getElementById('salaryChart');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [
+          {% for loc in comparison %}"{{ loc.location }}"{% if not loop.last %}, {% endif %}{% endfor %}
+        ],
+        datasets: [{
+          label: 'Average Salary',
+          data: [
+            {% for loc in comparison %}{{ loc.avg_salary or 0 }}{% if not loop.last %}, {% endif %}{% endfor %}
+          ],
+          backgroundColor: '#667eea',
+          borderRadius: 10
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+  {% endif %}
+</body>
+</html>

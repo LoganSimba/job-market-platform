@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Market Intelligence Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 600;
+        }
+        
+        .nav-link:hover {
+            color: rgba(255, 255, 255, 0.8) !important;
+            transform: translateY(-1px);
+            transition: all 0.3s ease;
+        }
+        
+        .hero-intro {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-card h3 {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 2.5rem;
+        }
+        
+        .chart-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .page-title {
+            color: white;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .insight-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tech-tag {
+            background: rgba(102, 126, 234, 0.2);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                📊 Job Market Intelligence
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link active" href="/">Dashboard</a>
+                <a class="nav-link" href="/skills">Skills</a>
+                <a class="nav-link" href="/salaries">Salaries</a>
+                <a class="nav-link" href="/companies">Companies</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h1 class="page-title display-4">Live Market Dashboard</h1>
+                <p class="page-subtitle">{{ summary.total_jobs }} jobs analyzed across top tech regions</p>
+            </div>
+        </div>
+
+        <!-- Hero Story Section -->
+        <div class="hero-intro p-4 p-md-5">
+            <h2 class="text-white mb-4" style="font-size: 1.8rem; font-weight: 700;">Job Market Intelligence Platform</h2>
+            <p class="text-white mb-4" style="font-size: 1.1rem; line-height: 1.7; opacity: 0.95;">
+                I built this comprehensive platform to analyze the modern tech job market through a sophisticated 
+                simulation of <strong>{{ summary.total_jobs }} realistic job postings</strong> across major technology hubs. 
+                Using advanced data generation algorithms that mirror real-world hiring patterns, I created a complete 
+                market intelligence system that tracks salary trends, skill demands, and company hiring behaviors. 
+                The simulation incorporates authentic salary ranges, technology requirements, and geographic distributions 
+                to provide meaningful insights into today's competitive tech landscape.
+            </p>
+            <p class="text-white mb-3" style="opacity: 0.85;">
+                <span class="tech-tag">Python FastAPI</span>
+                <span class="tech-tag">SQLAlchemy ORM</span>
+                <span class="tech-tag">Jinja2 Templates</span>
+                <span class="tech-tag">Chart.js Visualizations</span>
+                <span class="tech-tag">Bootstrap UI</span>
+            </p>
+            <div class="row mt-4">
+                <div class="col-md-4 mb-2">
+                    <span class="insight-badge">📊 Statistical Analysis</span>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <span class="insight-badge">🛠️ Full-Stack Development</span>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <span class="insight-badge">📈 Data Visualization</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Statistics -->
+        <div class="row mb-5">
+            <div class="col-md-3 mb-3">
+                <div class="card stat-card h-100">
+                    <div class="card-body text-center py-4">
+                        <h3>{{ summary.total_jobs }}</h3>
+                        <p class="mb-0 fw-semibold">Total Jobs</p>
+                        <small class="text-muted">Analyzed</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card stat-card h-100">
+                    <div class="card-body text-center py-4">
+                        <h3>${{ summary.avg_salary }}</h3>
+                        <p class="mb-0 fw-semibold">Average Salary</p>
+                        <small class="text-muted">Market Rate</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card stat-card h-100">
+                    <div class="card-body text-center py-4">
+                        <h3>{{ summary.highest_paying_location.split(',')[0] }}</h3>
+                        <p class="mb-0 fw-semibold">Top City</p>
+                        <small class="text-muted">Highest Pay</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card stat-card h-100">
+                    <div class="card-body text-center py-4">
+                        <h3>{{ summary.remote_percentage }}%</h3>
+                        <p class="mb-0 fw-semibold">Remote Jobs</p>
+                        <small class="text-muted">Work From Home</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="chart-container">
+                    <h4 style="color: #333; font-weight: 700; margin-bottom: 1.5rem;">🛠️ Top Skills Demand</h4>
+                    <canvas id="skillsChart"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="chart-container">
+                    <h4 style="color: #333; font-weight: 700; margin-bottom: 1.5rem;">📍 Salary by Location</h4>
+                    <canvas id="salaryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Market Insights -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="chart-container">
+                    <h4 style="color: #333; font-weight: 700; margin-bottom: 1.5rem;">📈 Market Intelligence</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 style="color: var(--primary); font-weight: 600;">Most In-Demand Skills:</h5>
+                            <ul class="list-unstyled">
+                                {% for skill in top_skills[:5] %}
+                                <li class="mb-2">
+                                    <strong>{{ skill.skill }}</strong> 
+                                    <span class="badge bg-primary ms-2">{{ skill.job_count }} jobs</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 style="color: var(--primary); font-weight: 600;">Top Paying Markets:</h5>
+                            <ul class="list-unstyled">
+                                {% for location in locations[:5] %}
+                                <li class="mb-2">
+                                    <strong>{{ location.location }}</strong> 
+                                    <span class="badge bg-success ms-2">${{ location.avg_salary }} avg</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Skills Chart with enhanced styling
+        const skillsData = {
+            labels: [
+                {% for skill in top_skills[:6] %}
+                "{{ skill.skill }}"{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ],
+            datasets: [{
+                label: 'Job Demand',
+                data: [
+                    {% for skill in top_skills[:6] %}
+                    {{ skill.job_count }}{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                borderColor: 'rgba(102, 126, 234, 1)',
+                borderWidth: 2,
+                borderRadius: 8,
+                borderSkipped: false,
+            }]
+        };
+
+        new Chart(document.getElementById('skillsChart'), {
+            type: 'bar',
+            data: skillsData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: { 
+                    y: { 
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Salary Chart with enhanced styling
+        const salaryData = {
+            labels: [
+                {% for location in locations[:6] %}
+                "{{ location.location.split(',')[0] }}"{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ],
+            datasets: [{
+                label: 'Average Salary ($)',
+                data: [
+                    {% for location in locations[:6] %}
+                    {{ location.avg_salary }}{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                backgroundColor: 'rgba(76, 175, 80, 0.8)',
+                borderColor: 'rgba(76, 175, 80, 1)',
+                borderWidth: 2,
+                borderRadius: 8,
+                borderSkipped: false,
+            }]
+        };
+
+        new Chart(document.getElementById('salaryChart'), {
+            type: 'bar',
+            data: salaryData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: { 
+                    y: { 
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Top Skills Analysis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #667eea;
+      --secondary: #764ba2;
+      --text-light: #fff;
+      --bg-glass: rgba(255, 255, 255, 0.15);
+      --card-bg: rgba(255, 255, 255, 0.95);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .navbar {
+      backdrop-filter: blur(20px);
+      background-color: var(--bg-glass);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+
+    .nav-links a {
+      margin-left: 1.5rem;
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+      transform: translateY(-2px);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-light);
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .skills-card, .impact-card, .search-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .skills-card:hover, .impact-card:hover, .search-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .skill-item {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--text-light);
+      padding: 1rem;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.3s ease;
+    }
+
+    .skill-item:hover {
+      transform: scale(1.05);
+    }
+
+    .impact-summary {
+      font-size: 1.2rem;
+      color: #222;
+      line-height: 1.5;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 300px;
+      padding: 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .search-button {
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--text-light);
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .search-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .quick-skills {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .quick-skill-btn {
+      padding: 0.5rem 1rem;
+      background: rgba(102, 126, 234, 0.1);
+      border: 1px solid rgba(102, 126, 234, 0.3);
+      border-radius: 20px;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .quick-skill-btn:hover {
+      background: rgba(102, 126, 234, 0.2);
+      transform: translateY(-1px);
+    }
+
+    canvas {
+      width: 100% !important;
+      max-height: 400px;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .search-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .search-input {
+        min-width: auto;
+      }
+      
+      .container {
+        padding: 1rem;
+      }
+      
+      .section-title {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">📊 Job Market Intelligence</div>
+    <nav class="nav-links">
+      <a href="/">Dashboard</a>
+      <a href="/skills">Skills</a>
+      <a href="/salaries">Salaries</a>
+      <a href="/companies">Companies</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="section-title">💡 Top In-Demand Skills</div>
+    <section class="skills-card">
+      <div class="skills-grid">
+        {% for skill in skills %}
+          <div class="skill-item">
+            <span>{{ skill.skill }}</span>
+            <span>{{ skill.job_count }} jobs</span>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <div class="section-title">🔍 Skill Salary Analyzer</div>
+    <section class="search-card">
+      <form method="get" action="/skills" class="search-form">
+        <input 
+          type="text" 
+          name="skill" 
+          value="{{ current_skill or 'Python' }}"
+          placeholder="Enter skill to analyze (e.g., React, AWS, Machine Learning)"
+          class="search-input"
+        />
+        <button type="submit" class="search-button">
+          🔍 Analyze Skill
+        </button>
+      </form>
+      
+      <div class="quick-skills">
+        <span style="color: #666; font-weight: 600; margin-right: 0.5rem;">Quick analyze:</span>
+        <a href="/skills?skill=Python" class="quick-skill-btn">Python</a>
+        <a href="/skills?skill=JavaScript" class="quick-skill-btn">JavaScript</a>
+        <a href="/skills?skill=React" class="quick-skill-btn">React</a>
+        <a href="/skills?skill=AWS" class="quick-skill-btn">AWS</a>
+        <a href="/skills?skill=Machine Learning" class="quick-skill-btn">Machine Learning</a>
+        <a href="/skills?skill=Docker" class="quick-skill-btn">Docker</a>
+      </div>
+    </section>
+
+    <div class="section-title">💰 Salary Impact of {{ current_skill or 'Python' }}</div>
+    <section class="impact-card">
+      {% if python_impact %}
+        <p class="impact-summary">
+          Jobs requiring <strong>{{ current_skill or 'Python' }}</strong> offer an average salary of
+          <strong>${{ "{:,}".format(python_impact.average_salary|int if python_impact.average_salary else 0) }}</strong>, compared to the overall market average of
+          <strong>${{ "{:,}".format(python_impact.market_average|int if python_impact.market_average else 0) }}</strong>.
+          {% if python_impact.percentage_increase %}
+            {% if python_impact.percentage_increase > 0 %}
+              <span style="color: #10b981; font-weight: 600;">
+                (+{{ python_impact.percentage_increase }}% premium)
+              </span>
+            {% elif python_impact.percentage_increase < 0 %}
+              <span style="color: #ef4444; font-weight: 600;">
+                ({{ python_impact.percentage_increase }}% below market)
+              </span>
+            {% else %}
+              <span style="color: #6b7280; font-weight: 600;">
+                (At market rate)
+              </span>
+            {% endif %}
+          {% endif %}
+        </p>
+        <canvas id="impactChart"></canvas>
+      {% else %}
+        <p class="impact-summary">No data available for {{ current_skill or 'Python' }} salary impact.</p>
+      {% endif %}
+    </section>
+  </main>
+
+  {% if python_impact %}
+  <script>
+    const ctx = document.getElementById('impactChart');
+    const skillName = '{{ current_skill or "Python" }}';
+    
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [skillName + ' Jobs', 'Market Average'],
+        datasets: [{
+          label: 'Average Salary',
+          data: [{{ python_impact.average_salary or 0 }}, {{ python_impact.market_average or 0 }}],
+          backgroundColor: [
+            '{{ current_skill or "Python" }}' === 'Python' ? '#667eea' : '#f093fb',
+            '#94a3b8'
+          ],
+          borderRadius: 12,
+          borderSkipped: false,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { 
+            display: false 
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return '$' + value.toLocaleString();
+              }
+            }
+          }
+        }
+      }
+    });
+  </script>
+  {% endif %}
+</body>
+</html>

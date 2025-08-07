@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Company Insights Analysis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #667eea;
+      --secondary: #764ba2;
+      --text-light: #fff;
+      --bg-glass: rgba(255, 255, 255, 0.15);
+      --card-bg: rgba(255, 255, 255, 0.95);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .navbar {
+      backdrop-filter: blur(20px);
+      background-color: var(--bg-glass);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+
+    .nav-links a {
+      margin-left: 1.5rem;
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+      transform: translateY(-2px);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-light);
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .companies-card, .insights-card, .chart-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .companies-card:hover, .insights-card:hover, .chart-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .companies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .company-item {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--text-light);
+      padding: 1.5rem;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .company-item:hover {
+      transform: scale(1.05);
+    }
+
+    .company-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .company-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .job-count {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .avg-salary {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .insights-summary {
+      font-size: 1.1rem;
+      color: #222;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .insights-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .stat-item {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+
+    canvas {
+      width: 100% !important;
+      max-height: 400px;
+    }
+
+    .chart-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    /* Loading animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--text-light);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      .companies-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .section-title {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">📊 Job Market Intelligence</div>
+    <nav class="nav-links">
+      <a href="/">Dashboard</a>
+      <a href="/skills">Skills</a>
+      <a href="/salaries">Salaries</a>
+      <a href="/companies">Companies</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="section-title">🏢 Top Hiring Companies</div>
+    <section class="companies-card">
+      {% if companies %}
+        <div class="companies-grid">
+          {% for company in companies %}
+            <div class="company-item">
+              <div class="company-name">{{ company.company }}</div>
+              <div class="company-stats">
+                <span class="job-count">{{ company.job_count }} positions</span>
+                <span class="avg-salary">${{ "{:,}".format(company.avg_salary|int if company.avg_salary else 0) }}</span>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="insights-summary">No company data available at the moment.</p>
+      {% endif %}
+    </section>
+
+    {% if insights %}
+    <div class="section-title">📈 Market Insights</div>
+    <section class="insights-card">
+      <p class="insights-summary">
+        <strong>{{ insights.total_companies }}</strong> companies are actively hiring, with an average of 
+        <strong>{{ "{:.1f}".format(insights.avg_jobs_per_company) }}</strong> open positions per company. 
+        The market shows strong demand across various industries and company sizes.
+      </p>
+      
+      <div class="insights-stats">
+        <div class="stat-item">
+          <span class="stat-value">{{ insights.total_companies }}</span>
+          <span class="stat-label">Active Companies</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">{{ insights.total_jobs }}</span>
+          <span class="stat-label">Total Positions</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">${{ "{:,}".format(insights.market_avg_salary|int if insights.market_avg_salary else 0) }}</span>
+          <span class="stat-label">Market Average</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">{{ "{:.1f}".format(insights.avg_jobs_per_company) }}</span>
+          <span class="stat-label">Avg Jobs/Company</span>
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    {% if companies and companies|length > 0 %}
+    <div class="section-title">📊 Hiring Volume Comparison</div>
+    <section class="chart-card">
+      <div class="chart-title">Job Postings by Top Companies</div>
+      <canvas id="companiesChart"></canvas>
+    </section>
+    {% endif %}
+  </main>
+
+  {% if companies and companies|length > 0 %}
+  <script>
+    const ctx = document.getElementById('companiesChart');
+    const companiesData = {{ companies|tojson }};
+    
+    // Debug: log the data to console
+    console.log('Companies data:', companiesData);
+    
+    // Take top 8 companies and ensure we have valid data
+    const topCompanies = companiesData.slice(0, 8).filter(c => c.company && c.job_count);
+    console.log('Filtered top companies:', topCompanies);
+    
+    if (topCompanies.length > 0) {
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: topCompanies.map(c => c.company),
+          datasets: [{
+            label: 'Job Postings',
+            data: topCompanies.map(c => c.job_count || 0),
+            backgroundColor: [
+              '#667eea', '#764ba2', '#f093fb', '#f5576c', 
+              '#4facfe', '#00f2fe', '#43e97b', '#38f9d7'
+            ],
+            borderRadius: 8,
+            borderSkipped: false,
+          }]
+        },
+        options: {
+          indexAxis: 'y', // This makes it horizontal in Chart.js v3+
+          responsive: true,
+          plugins: {
+            legend: { 
+              display: false 
+            }
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              grid: {
+                color: 'rgba(0, 0, 0, 0.1)'
+              },
+              ticks: {
+                color: '#666'
+              }
+            },
+            y: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                color: '#666'
+              }
+            }
+          }
+        }
+      });
+    } else {
+      // If no data, show a message
+      document.getElementById('companiesChart').style.display = 'none';
+      document.querySelector('.chart-card').innerHTML += '<p style="text-align: center; color: #666;">No chart data available</p>';
+    }
+  </script>
+  {% endif %}
+</body>
+</html>
