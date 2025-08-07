@@ -9,7 +9,7 @@ import uvicorn
 app = FastAPI(title="Job Market Intelligence Platform")
 
 # Mount static files (CSS, JS, images)
-app.mount("/static", StaticFiles(directory="static"), name="static")
+#app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Templates
 templates = Jinja2Templates(directory="templates")
@@ -185,4 +185,5 @@ async def trends_page(request: Request):
         return HTMLResponse(f"<h1>Error: {str(e)}</h1>", status_code=500)
 
 if __name__ == "__main__":
+
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
