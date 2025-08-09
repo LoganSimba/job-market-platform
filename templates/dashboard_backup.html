@@ -1,365 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Market Intelligence Platform</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-        }
-        
-        body {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            min-height: 100vh;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        
-        .navbar {
-            background: rgba(255, 255, 255, 0.1) !important;
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .navbar-brand, .nav-link {
-            color: white !important;
-            font-weight: 600;
-        }
-        
-        .nav-link:hover {
-            color: rgba(255, 255, 255, 0.8) !important;
-            transform: translateY(-1px);
-            transition: all 0.3s ease;
-        }
-        
-        .hero-intro {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-        }
-        
-        .stat-card {
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            border-radius: 16px;
-            border: none;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-        }
-        
-        .stat-card h3 {
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 2.5rem;
-        }
-        
-        .chart-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-        }
-        
-        .page-title {
-            color: white;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .page-subtitle {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .insight-badge {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .tech-tag {
-            background: rgba(102, 126, 234, 0.2);
-            color: var(--primary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-right: 0.5rem;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Logan Simba — Full‑Stack Developer</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0b10;
+      --bg-2: #0d0f1e;
+      --text: #e7eaf6;
+      --muted: #a7b0d0;
+      --brand: #7aa2ff;
+      --brand-2: #8a5cff;
+      --accent: #67e480;
+      --card: rgba(255, 255, 255, 0.06);
+      --stroke: rgba(255,255,255,.12);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    [data-theme="light"] {
+      --bg: #f6f7fb;
+      --bg-2: #ffffff;
+      --text: #141624;
+      --muted: #4b4f6b;
+      --brand: #4c65ff;
+      --brand-2: #8b5cf6;
+      --accent: #0ea5e9;
+      --card: rgba(0, 0, 0, 0.04);
+      --stroke: rgba(20,22,36,.12);
+      --shadow: 0 10px 30px rgba(2, 7, 26, .08);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text); background: var(--bg);
+      overflow-x: hidden;
+    }
+
+    /* Background mesh */
+    .bg {
+      position: fixed; inset: -20vmax; z-index: -1; filter: blur(60px) saturate(140%);
+      background:
+        radial-gradient(40vmax 30vmax at 20% 10%, color-mix(in oklab, var(--brand) 70%, #00ddeb 30%), transparent 60%),
+        radial-gradient(35vmax 30vmax at 85% 20%, color-mix(in oklab, var(--brand-2) 75%, #00ffaa 25%), transparent 55%),
+        radial-gradient(35vmax 30vmax at 50% 90%, #00c2ff66, transparent 60%);
+      animation: float 24s ease-in-out infinite alternate;
+    }
+    @media (prefers-reduced-motion: reduce) { .bg { animation: none; } }
+    @keyframes float { to { transform: translate3d(0,-30px,0) scale(1.02); } }
+
+    .container { width: min(1200px, 92vw); margin-inline: auto; }
+
+    /* Header */
+    header { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px); border-bottom: 1px solid var(--stroke);
+      background: color-mix(in oklab, var(--bg) 70%, transparent); }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+    .logo { display: flex; gap: 10px; align-items: center; font-weight: 800; letter-spacing: .3px; }
+    .logo i { color: var(--brand); }
+    .nav-links { display: flex; gap: 22px; align-items: center; list-style: none; margin: 0; }
+    .nav-links a { color: var(--text); text-decoration: none; opacity: .9; font-weight: 600; }
+    .nav-links a:hover { opacity: 1; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 12px; text-decoration: none; border: 1px solid var(--stroke); background: var(--card); color: var(--text); box-shadow: var(--shadow); }
+    .btn:hover { transform: translateY(-1px); }
+
+    .theme-toggle { cursor: pointer; }
+    .menu-toggle { display: none; }
+    @media (max-width: 860px) {
+      .menu-toggle { display: inline-flex; }
+      .nav-links { position: fixed; right: 14px; top: 64px; flex-direction: column; padding: 12px; background: var(--bg-2); border:1px solid var(--stroke); border-radius: 14px; display: none; }
+      .nav-links.open { display: flex; }
+    }
+
+    /* Hero */
+    .hero { display: grid; align-items: center; min-height: 88vh; padding: 56px 0 20px; }
+    .hero h1 { font-size: clamp(2rem, 4vw + 1rem, 4rem); line-height: 1.08; margin: 0 0 12px; }
+    .subtitle { font-size: clamp(1rem, 1.2vw + .6rem, 1.25rem); color: var(--muted); margin-bottom: 22px; }
+    .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+    .cta .primary { background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #fff; border: none; }
+    .cta .primary:hover { filter: brightness(1.05); }
+
+    /* Sections */
+    .section { padding: 80px 0; }
+    .section-title { font-size: clamp(1.6rem, 1.8vw + 1rem, 2.2rem); margin: 0 0 24px; }
+    .lead { color: var(--muted); max-width: 72ch; }
+
+    /* Cards */
+    .grid { display: grid; gap: 18px; grid-template-columns: repeat(12, 1fr); }
+    .card { grid-column: span 12; background: var(--card); border: 1px solid var(--stroke); border-radius: 16px; padding: 18px; box-shadow: var(--shadow); }
+    .about-card { display: grid; gap: 18px; grid-template-columns: 220px 1fr; align-items: center; }
+    .avatar { width: 200px; height: 200px; border-radius: 24px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); display: grid; place-items: center; font-size: 64px; color: #fff; border: 1px solid var(--stroke); box-shadow: var(--shadow); }
+
+    @media (max-width: 860px) { .about-card { grid-template-columns: 1fr; text-align: center; } .avatar { margin: 0 auto; } }
+
+    .skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .tag { padding: 6px 10px; border-radius: 999px; border: 1px solid var(--stroke); background: color-mix(in oklab, var(--card) 70%, transparent); font-size: .9rem; }
+
+    /* Projects */
+    .projects { grid-template-columns: repeat(12, 1fr); }
+    .project { grid-column: span 6; display: grid; gap: 12px; overflow: hidden; }
+    .project .thumb { height: 200px; border-radius: 14px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); display: grid; place-items: center; font-size: 42px; color: #fff; border:1px solid var(--stroke); }
+    .project .body { background: var(--card); border: 1px solid var(--stroke); border-radius: 14px; padding: 16px; }
+    .project h3 { margin: 0 0 6px; }
+    .tech { display:flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+    .tech .chip { font-size: .8rem; padding: 4px 10px; border-radius: 999px; background: color-mix(in oklab, var(--bg-2) 92%, transparent); border: 1px solid var(--stroke); }
+    .links { display:flex; gap: 10px; }
+
+    @media (max-width: 1000px) { .project { grid-column: span 12; } }
+
+    /* Contact */
+    .contact { text-align: center; }
+    .contact-list { display:flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
+    .contact-item { display: inline-flex; align-items: center; gap: 8px; padding: 10px 12px; border:1px solid var(--stroke); border-radius: 12px; background: var(--card); }
+
+    /* Utilities */
+    .sr-only { position: absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip: rect(0,0,0,0); border:0; }
+    .center { text-align:center; }
+    .muted { color: var(--muted); }
+
+    /* Smooth reveal (no heavy libs) */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.show { opacity: 1; transform: none; }
+  </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                📊 Job Market Intelligence
-            </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link active" href="/">Dashboard</a>
-                <a class="nav-link" href="/skills">Skills</a>
-                <a class="nav-link" href="/salaries">Salaries</a>
-                <a class="nav-link" href="/companies">Companies</a>
-            </div>
-        </div>
+  <div class="bg" aria-hidden="true"></div>
+  <a href="#home" class="sr-only">Skip to content</a>
+  <header>
+    <nav class="container">
+      <div class="logo"><i class="fa-solid fa-bolt"></i> Logan Simba</div>
+      <button class="btn menu-toggle" aria-controls="nav" aria-expanded="false"><i class="fa-solid fa-bars"></i> Menu</button>
+      <ul id="nav" class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button id="themeBtn" class="btn theme-toggle" title="Toggle theme"><i class="fa-solid fa-moon"></i></button></li>
+      </ul>
     </nav>
+  </header>
 
-    <!-- Main Content -->
-    <div class="container mt-4">
-        <!-- Header -->
-        <div class="row mb-4">
-            <div class="col-12 text-center">
-                <h1 class="page-title display-4">Live Market Dashboard</h1>
-                <p class="page-subtitle">{{ summary.total_jobs }} jobs analyzed across top tech regions</p>
-            </div>
-        </div>
+  <main id="home" class="hero container reveal">
+    <section>
+      <h1>Full‑Stack Developer crafting useful, fast, and secure web apps.</h1>
+      <p class="subtitle">Python • Java • FastAPI • Spring • SQL • Cloud — building data‑driven products with modern UX.</p>
+      <div class="cta">
+        <a href="#projects" class="btn primary"><i class="fa-solid fa-eye"></i> View My Work</a>
+        <a href="#contact" class="btn"><i class="fa-solid fa-paper-plane"></i> Contact</a>
+      </div>
+    </section>
+  </main>
 
-        <!-- Hero Story Section -->
-        <div class="hero-intro p-4 p-md-5">
-            <h2 class="text-white mb-4" style="font-size: 1.8rem; font-weight: 700;">Job Market Intelligence Platform</h2>
-            <p class="text-white mb-4" style="font-size: 1.1rem; line-height: 1.7; opacity: 0.95;">
-                I built this comprehensive platform to analyze the modern tech job market through a sophisticated 
-                simulation of <strong>{{ summary.total_jobs }} realistic job postings</strong> across major technology hubs. 
-                Using advanced data generation algorithms that mirror real-world hiring patterns, I created a complete 
-                market intelligence system that tracks salary trends, skill demands, and company hiring behaviors. 
-                The simulation incorporates authentic salary ranges, technology requirements, and geographic distributions 
-                to provide meaningful insights into today's competitive tech landscape.
-            </p>
-            <p class="text-white mb-3" style="opacity: 0.85;">
-                <span class="tech-tag">Python FastAPI</span>
-                <span class="tech-tag">SQLAlchemy ORM</span>
-                <span class="tech-tag">Jinja2 Templates</span>
-                <span class="tech-tag">Chart.js Visualizations</span>
-                <span class="tech-tag">Bootstrap UI</span>
-            </p>
-            <div class="row mt-4">
-                <div class="col-md-4 mb-2">
-                    <span class="insight-badge">📊 Statistical Analysis</span>
-                </div>
-                <div class="col-md-4 mb-2">
-                    <span class="insight-badge">🛠️ Full-Stack Development</span>
-                </div>
-                <div class="col-md-4 mb-2">
-                    <span class="insight-badge">📈 Data Visualization</span>
-                </div>
-            </div>
+  <section id="about" class="section container reveal">
+    <h2 class="section-title">About Me</h2>
+    <div class="card about-card">
+      <div class="avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></div>
+      <div>
+        <p class="lead">I’m a CS student and full‑stack developer who loves turning messy datasets and real‑world constraints into clean, fast web apps. I ship quickly, write maintainable code, and iterate with user feedback.</p>
+        <p class="muted">Currently seeking internship opportunities where I can contribute to meaningful projects while levelling up in backend, data, and cloud.</p>
+        <div class="skills">
+          <span class="tag">Python</span><span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">FastAPI</span><span class="tag">JavaScript</span><span class="tag">HTML/CSS</span><span class="tag">SQLAlchemy</span><span class="tag">Chart.js</span><span class="tag">Database Design</span><span class="tag">Data Analysis</span><span class="tag">Cloud Deployment</span><span class="tag">Git/GitHub</span><span class="tag">REST APIs</span><span class="tag">Jinja2</span>
         </div>
-
-        <!-- Key Statistics -->
-        <div class="row mb-5">
-            <div class="col-md-3 mb-3">
-                <div class="card stat-card h-100">
-                    <div class="card-body text-center py-4">
-                        <h3>{{ summary.total_jobs }}</h3>
-                        <p class="mb-0 fw-semibold">Total Jobs</p>
-                        <small class="text-muted">Analyzed</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="card stat-card h-100">
-                    <div class="card-body text-center py-4">
-                        <h3>${{ summary.avg_salary }}</h3>
-                        <p class="mb-0 fw-semibold">Average Salary</p>
-                        <small class="text-muted">Market Rate</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="card stat-card h-100">
-                    <div class="card-body text-center py-4">
-                        <h3>{{ summary.highest_paying_location.split(',')[0] }}</h3>
-                        <p class="mb-0 fw-semibold">Top City</p>
-                        <small class="text-muted">Highest Pay</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="card stat-card h-100">
-                    <div class="card-body text-center py-4">
-                        <h3>{{ summary.remote_percentage }}%</h3>
-                        <p class="mb-0 fw-semibold">Remote Jobs</p>
-                        <small class="text-muted">Work From Home</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Charts -->
-        <div class="row">
-            <div class="col-lg-6 mb-4">
-                <div class="chart-container">
-                    <h4 style="color: #333; font-weight: 700; margin-bottom: 1.5rem;">🛠️ Top Skills Demand</h4>
-                    <canvas id="skillsChart"></canvas>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="chart-container">
-                    <h4 style="color: #333; font-weight: 700; margin-bottom: 1.5rem;">📍 Salary by Location</h4>
-                    <canvas id="salaryChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Market Insights -->
-        <div class="row mb-5">
-            <div class="col-12">
-                <div class="chart-container">
-                    <h4 style="color: #333; font-weight: 700; margin-bottom: 1.5rem;">📈 Market Intelligence</h4>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5 style="color: var(--primary); font-weight: 600;">Most In-Demand Skills:</h5>
-                            <ul class="list-unstyled">
-                                {% for skill in top_skills[:5] %}
-                                <li class="mb-2">
-                                    <strong>{{ skill.skill }}</strong> 
-                                    <span class="badge bg-primary ms-2">{{ skill.job_count }} jobs</span>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h5 style="color: var(--primary); font-weight: 600;">Top Paying Markets:</h5>
-                            <ul class="list-unstyled">
-                                {% for location in locations[:5] %}
-                                <li class="mb-2">
-                                    <strong>{{ location.location }}</strong> 
-                                    <span class="badge bg-success ms-2">${{ location.avg_salary }} avg</span>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+  </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Skills Chart with enhanced styling
-        const skillsData = {
-            labels: [
-                {% for skill in top_skills[:6] %}
-                "{{ skill.skill }}"{% if not loop.last %},{% endif %}
-                {% endfor %}
-            ],
-            datasets: [{
-                label: 'Job Demand',
-                data: [
-                    {% for skill in top_skills[:6] %}
-                    {{ skill.job_count }}{% if not loop.last %},{% endif %}
-                    {% endfor %}
-                ],
-                backgroundColor: 'rgba(102, 126, 234, 0.8)',
-                borderColor: 'rgba(102, 126, 234, 1)',
-                borderWidth: 2,
-                borderRadius: 8,
-                borderSkipped: false,
-            }]
-        };
+  <section id="projects" class="section container reveal">
+    <h2 class="section-title">Featured Projects</h2>
+    <div class="grid projects">
+      <!-- Project 1 -->
+      <article class="project">
+        <div class="thumb"><i class="fas fa-chart-bar" aria-hidden="true"></i></div>
+        <div class="body">
+          <h3>Job Market Intelligence Platform</h3>
+          <p class="muted">Analytics platform for 1,000+ tech job postings with salary trends, in‑demand skills, and interactive charts.</p>
+          <div class="tech"><span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">SQLAlchemy</span><span class="chip">Chart.js</span><span class="chip">Jinja2</span><span class="chip">Railway</span></div>
+          <div class="links">
+            <a class="btn primary" href="https://job-market-platform-production.up.railway.app" target="_blank" rel="noopener">Live Demo <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            <a class="btn" href="https://github.com/LoganSimba/job-market-platform" target="_blank" rel="noopener"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+      </article>
+      <!-- Project 2 -->
+      <article class="project">
+        <div class="thumb"><i class="fas fa-university" aria-hidden="true"></i></div>
+        <div class="body">
+          <h3>Banking Management System</h3>
+          <p class="muted">Spring Boot app with accounts, transactions, and a clean UI. Deployed to Railway with CI/CD.</p>
+          <div class="tech"><span class="chip">Spring Boot</span><span class="chip">Java</span><span class="chip">Thymeleaf</span><span class="chip">H2</span><span class="chip">Railway</span><span class="chip">Bootstrap</span></div>
+          <div class="links">
+            <a class="btn primary" href="https://springboot-bankmanagementsystem-production.up.railway.app/" target="_blank" rel="noopener">Live Demo <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            <a class="btn" href="https://github.com/LoganSimba/springboot-BankManagementSystem" target="_blank" rel="noopener"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+      </article>
+      <!-- Project 3 -->
+      <article class="project">
+        <div class="thumb"><i class="fas fa-code" aria-hidden="true"></i></div>
+        <div class="body">
+          <h3>Portfolio Website</h3>
+          <p class="muted">Responsive portfolio with animations and mobile‑first layout.</p>
+          <div class="tech"><span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">JavaScript</span><span class="chip">Responsive</span></div>
+          <div class="links">
+            <a class="btn primary" href="#" aria-disabled="true">Live Demo</a>
+            <a class="btn" href="#" aria-disabled="true"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
 
-        new Chart(document.getElementById('skillsChart'), {
-            type: 'bar',
-            data: skillsData,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: { 
-                    y: { 
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0,0,0,0.1)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
+  <section id="contact" class="section container reveal contact">
+    <h2 class="section-title">Let’s Connect</h2>
+    <p class="lead">I’m actively seeking internship opportunities and would love to talk about how I can help your team ship faster.</p>
+    <div class="contact-list" role="list">
+      <a class="contact-item" href="mailto:logansimba77@gmail.com"><i class="fas fa-envelope"></i> <span>logansimba77@gmail.com</span></a>
+      <a class="contact-item" href="https://www.linkedin.com/in/logan-simba-9b40b2348/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> <span>LinkedIn</span></a>
+      <a class="contact-item" href="https://github.com/LoganSimba" target="_blank" rel="noopener"><i class="fab fa-github"></i> <span>GitHub</span></a>
+    </div>
+  </section>
 
-        // Salary Chart with enhanced styling
-        const salaryData = {
-            labels: [
-                {% for location in locations[:6] %}
-                "{{ location.location.split(',')[0] }}"{% if not loop.last %},{% endif %}
-                {% endfor %}
-            ],
-            datasets: [{
-                label: 'Average Salary ($)',
-                data: [
-                    {% for location in locations[:6] %}
-                    {{ location.avg_salary }}{% if not loop.last %},{% endif %}
-                    {% endfor %}
-                ],
-                backgroundColor: 'rgba(76, 175, 80, 0.8)',
-                borderColor: 'rgba(76, 175, 80, 1)',
-                borderWidth: 2,
-                borderRadius: 8,
-                borderSkipped: false,
-            }]
-        };
+  <footer class="center muted" style="padding:40px 0; border-top:1px solid var(--stroke); background: color-mix(in oklab, var(--bg) 80%, transparent);">
+    <div class="container">© <span id="year"></span> Logan Simba. Built with semantic HTML, accessible components, and zero frameworks.</div>
+  </footer>
 
-        new Chart(document.getElementById('salaryChart'), {
-            type: 'bar',
-            data: salaryData,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: { 
-                    y: { 
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0,0,0,0.1)'
-                        },
-                        ticks: {
-                            callback: function(value) {
-                                return '$' + value.toLocaleString();
-                            }
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-    </script>
+  <script>
+    // Smooth scroll without breaking hash behavior
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        const el = document.querySelector(id);
+        if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); history.replaceState(null, '', id); }
+      });
+    });
+
+    // Theme toggle (persists)
+    const root = document.documentElement;
+    const saved = localStorage.getItem('theme');
+    if (saved) root.setAttribute('data-theme', saved);
+    document.getElementById('themeBtn').addEventListener('click', () => {
+      const cur = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', cur);
+      localStorage.setItem('theme', cur);
+    });
+
+    // Mobile menu
+    const menuBtn = document.querySelector('.menu-toggle');
+    const nav = document.getElementById('nav');
+    menuBtn.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open);
+    });
+
+    // Reveal on scroll (lightweight)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
