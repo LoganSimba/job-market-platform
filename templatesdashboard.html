@@ -1,215 +1,268 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Job Market Intelligence Platform</title>
-  <meta name="description" content="Interactive dashboard for simulated tech job data: skills demand, salaries, and company trends." />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>Logan Simba — Full‑Stack Developer</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0b0f1a; --bg-2: #0e1424; --text: #e9ecf7; --muted: #a9b1cc;
-      --brand: #7aa2ff; --brand-2: #8a5cff; --accent: #67e480;
-      --glass: rgba(255,255,255,0.08); --stroke: rgba(255,255,255,0.14);
-      --card: rgba(255,255,255,0.06); --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --bg: #0a0b10;
+      --bg-2: #0d0f1e;
+      --text: #e7eaf6;
+      --muted: #a7b0d0;
+      --brand: #7aa2ff;
+      --brand-2: #8a5cff;
+      --accent: #67e480;
+      --card: rgba(255, 255, 255, 0.06);
+      --stroke: rgba(255,255,255,.12);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
     }
     [data-theme="light"] {
-      --bg: #f7f8fc; --bg-2: #ffffff; --text: #0f1324; --muted: #4f5673;
-      --brand: #4c65ff; --brand-2: #8b5cf6; --accent: #0ea5e9;
-      --glass: rgba(0,0,0,0.06); --stroke: rgba(15,19,36,.12);
-      --card: rgba(0,0,0,0.04); --shadow: 0 10px 24px rgba(2, 7, 26, .08);
+      --bg: #f6f7fb;
+      --bg-2: #ffffff;
+      --text: #141624;
+      --muted: #4b4f6b;
+      --brand: #4c65ff;
+      --brand-2: #8b5cf6;
+      --accent: #0ea5e9;
+      --card: rgba(0, 0, 0, 0.04);
+      --stroke: rgba(20,22,36,.12);
+      --shadow: 0 10px 30px rgba(2, 7, 26, .08);
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;font:16px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--text);background:var(--bg)}
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text); background: var(--bg);
+      overflow-x: hidden;
+    }
 
     /* Background mesh */
-    .bg{position:fixed;inset:-20vmax;z-index:-1;filter:blur(60px) saturate(140%);
+    .bg {
+      position: fixed; inset: -20vmax; z-index: -1; filter: blur(60px) saturate(140%);
       background:
-        radial-gradient(40vmax 30vmax at 20% 10%, color-mix(in oklab, var(--brand) 75%, #00ddeb 25%), transparent 60%),
-        radial-gradient(36vmax 30vmax at 85% 20%, color-mix(in oklab, var(--brand-2) 75%, #00ffaa 25%), transparent 60%),
-        radial-gradient(34vmax 28vmax at 50% 92%, #00c2ff55, transparent 60%);
-      animation:float 24s ease-in-out infinite alternate}
-    @media (prefers-reduced-motion:reduce){.bg{animation:none}}
-    @keyframes float{to{transform:translate3d(0,-30px,0) scale(1.02)}}
+        radial-gradient(40vmax 30vmax at 20% 10%, color-mix(in oklab, var(--brand) 70%, #00ddeb 30%), transparent 60%),
+        radial-gradient(35vmax 30vmax at 85% 20%, color-mix(in oklab, var(--brand-2) 75%, #00ffaa 25%), transparent 55%),
+        radial-gradient(35vmax 30vmax at 50% 90%, #00c2ff66, transparent 60%);
+      animation: float 24s ease-in-out infinite alternate;
+    }
+    @media (prefers-reduced-motion: reduce) { .bg { animation: none; } }
+    @keyframes float { to { transform: translate3d(0,-30px,0) scale(1.02); } }
 
-    .container{width:min(1200px,92vw);margin-inline:auto}
+    .container { width: min(1200px, 92vw); margin-inline: auto; }
 
-    /* Navbar */
-    .navbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 0;backdrop-filter:blur(14px);border-bottom:1px solid var(--stroke);background:color-mix(in oklab, var(--bg) 72%, transparent)}
-    .logo{display:flex;gap:10px;align-items:center;font-weight:800;letter-spacing:.2px}
-    .logo-emoji{filter:drop-shadow(0 2px 8px #0006)}
-    .nav-links a{margin-left:18px;color:var(--text);text-decoration:none;font-weight:600;opacity:.9}
-    .nav-links a:hover{opacity:1}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid var(--stroke);background:var(--card);color:var(--text);text-decoration:none;box-shadow:var(--shadow)}
-    .btn:hover{transform:translateY(-1px)}
+    /* Header */
+    header { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px); border-bottom: 1px solid var(--stroke);
+      background: color-mix(in oklab, var(--bg) 70%, transparent); }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+    .logo { display: flex; gap: 10px; align-items: center; font-weight: 800; letter-spacing: .3px; }
+    .logo i { color: var(--brand); }
+    .nav-links { display: flex; gap: 22px; align-items: center; list-style: none; margin: 0; }
+    .nav-links a { color: var(--text); text-decoration: none; opacity: .9; font-weight: 600; }
+    .nav-links a:hover { opacity: 1; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 12px; text-decoration: none; border: 1px solid var(--stroke); background: var(--card); color: var(--text); box-shadow: var(--shadow); }
+    .btn:hover { transform: translateY(-1px); }
+
+    .theme-toggle { cursor: pointer; }
+    .menu-toggle { display: none; }
+    @media (max-width: 860px) {
+      .menu-toggle { display: inline-flex; }
+      .nav-links { position: fixed; right: 14px; top: 64px; flex-direction: column; padding: 12px; background: var(--bg-2); border:1px solid var(--stroke); border-radius: 14px; display: none; }
+      .nav-links.open { display: flex; }
+    }
 
     /* Hero */
-    .hero{display:grid;place-items:center;text-align:center;min-height:46vh;padding:24px 0}
-    .hero h1{font-size:clamp(1.8rem,2.8vw+1rem,3rem);margin:0 0 8px;background:linear-gradient(45deg,#fff,#b8d1ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-    .hero p{color:var(--muted);margin:0}
+    .hero { display: grid; align-items: center; min-height: 88vh; padding: 56px 0 20px; }
+    .hero h1 { font-size: clamp(2rem, 4vw + 1rem, 4rem); line-height: 1.08; margin: 0 0 12px; }
+    .subtitle { font-size: clamp(1rem, 1.2vw + .6rem, 1.25rem); color: var(--muted); margin-bottom: 22px; }
+    .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+    .cta .primary { background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #fff; border: none; }
+    .cta .primary:hover { filter: brightness(1.05); }
 
-    /* Story + Stats */
-    .story{background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(14px);border-radius:16px;padding:20px;margin:24px 0}
-    .story h2{margin:0 0 10px}
-    .story p{color:var(--text);opacity:.95}
+    /* Sections */
+    .section { padding: 80px 0; }
+    .section-title { font-size: clamp(1.6rem, 1.8vw + 1rem, 2.2rem); margin: 0 0 24px; }
+    .lead { color: var(--muted); max-width: 72ch; }
 
-    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:22px 0}
-    .stat-card{background:var(--card);border:1px solid var(--stroke);border-radius:14px;padding:16px;text-align:center;transition:transform .2s ease}
-    .stat-card:hover{transform:translateY(-3px)}
-    .stat-value{font-weight:800;font-size:1.6rem}
-    .stat-label{color:var(--muted);font-size:.95rem}
+    /* Cards */
+    .grid { display: grid; gap: 18px; grid-template-columns: repeat(12, 1fr); }
+    .card { grid-column: span 12; background: var(--card); border: 1px solid var(--stroke); border-radius: 16px; padding: 18px; box-shadow: var(--shadow); }
+    .about-card { display: grid; gap: 18px; grid-template-columns: 220px 1fr; align-items: center; }
+    .avatar { width: 200px; height: 200px; border-radius: 24px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); display: grid; place-items: center; font-size: 64px; color: #fff; border: 1px solid var(--stroke); box-shadow: var(--shadow); }
 
-    /* Charts */
-    .charts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:16px;margin:22px 0}
-    .panel{background:var(--bg-2);border:1px solid var(--stroke);border-radius:16px;box-shadow:var(--shadow);padding:16px}
-    .panel h3{margin:0 0 10px;color:var(--text)}
-    .chart-wrap{position:relative;height:300px}
+    @media (max-width: 860px) { .about-card { grid-template-columns: 1fr; text-align: center; } .avatar { margin: 0 auto; } }
 
-    /* Skills */
-    .section-title{font-size:1.4rem;margin:14px 0;color:var(--text)}
-    .skills-grid{background:var(--bg-2);border:1px solid var(--stroke);border-radius:16px;box-shadow:var(--shadow);padding:16px}
-    .skills-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
-    .skill-item{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;padding:.75rem 1rem;border-radius:12px;display:flex;justify-content:space-between;align-items:center}
+    .skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .tag { padding: 6px 10px; border-radius: 999px; border: 1px solid var(--stroke); background: color-mix(in oklab, var(--card) 70%, transparent); font-size: .9rem; }
 
-    /* Footer */
-    footer{padding:28px 0;border-top:1px solid var(--stroke);text-align:center;color:var(--muted);background:color-mix(in oklab, var(--bg) 80%, transparent)}
+    /* Projects */
+    .projects { grid-template-columns: repeat(12, 1fr); }
+    .project { grid-column: span 6; display: grid; gap: 12px; overflow: hidden; }
+    .project .thumb { height: 200px; border-radius: 14px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); display: grid; place-items: center; font-size: 42px; color: #fff; border:1px solid var(--stroke); }
+    .project .body { background: var(--card); border: 1px solid var(--stroke); border-radius: 14px; padding: 16px; }
+    .project h3 { margin: 0 0 6px; }
+    .tech { display:flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+    .tech .chip { font-size: .8rem; padding: 4px 10px; border-radius: 999px; background: color-mix(in oklab, var(--bg-2) 92%, transparent); border: 1px solid var(--stroke); }
+    .links { display:flex; gap: 10px; }
+
+    @media (max-width: 1000px) { .project { grid-column: span 12; } }
+
+    /* Contact */
+    .contact { text-align: center; }
+    .contact-list { display:flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
+    .contact-item { display: inline-flex; align-items: center; gap: 8px; padding: 10px 12px; border:1px solid var(--stroke); border-radius: 12px; background: var(--card); }
 
     /* Utilities */
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-    @media (max-width:768px){.container{padding:0 12px}.chart-wrap{height:260px}}
+    .sr-only { position: absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip: rect(0,0,0,0); border:0; }
+    .center { text-align:center; }
+    .muted { color: var(--muted); }
+
+    /* Smooth reveal (no heavy libs) */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.show { opacity: 1; transform: none; }
   </style>
 </head>
 <body>
   <div class="bg" aria-hidden="true"></div>
-  <a href="#main" class="sr-only">Skip to content</a>
-
-  <header class="navbar container">
-    <div class="logo"><span class="logo-emoji" aria-hidden="true">📊</span> <span>Job Market Intelligence</span></div>
-    <nav class="nav-links" aria-label="Primary">
-      <a href="/">Dashboard</a>
-      <a href="/skills">Skills</a>
-      <a href="/salaries">Salaries</a>
-      <a href="/companies">Companies</a>
-      <button id="themeBtn" class="btn" type="button" title="Toggle theme">Theme</button>
+  <a href="#home" class="sr-only">Skip to content</a>
+  <header>
+    <nav class="container">
+      <div class="logo"><i class="fa-solid fa-bolt"></i> Logan Simba</div>
+      <button class="btn menu-toggle" aria-controls="nav" aria-expanded="false"><i class="fa-solid fa-bars"></i> Menu</button>
+      <ul id="nav" class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button id="themeBtn" class="btn theme-toggle" title="Toggle theme"><i class="fa-solid fa-moon"></i></button></li>
+      </ul>
     </nav>
   </header>
 
-  <main id="main" class="container">
-    <section class="hero">
-      <h1>Live Market Dashboard</h1>
-      <p>{{ summary.total_jobs if summary else '1,000' }} jobs analyzed across top tech regions</p>
-    </section>
-
-    <section class="story">
-      <h2>Job Market Intelligence Platform</h2>
-      <p>
-        I built this comprehensive platform to analyze the modern tech job market through a realistic simulation of 1,000 job postings across major hubs.
-        It tracks salary trends, skill demand, and company hiring behavior using data generation tuned to real‑world patterns.
-      </p>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
-        <span class="btn" style="background:var(--glass)">Python FastAPI</span>
-        <span class="btn" style="background:var(--glass)">SQLAlchemy ORM</span>
-        <span class="btn" style="background:var(--glass)">Jinja2 Templates</span>
-        <span class="btn" style="background:var(--glass)">Chart.js</span>
-      </div>
-    </section>
-
-    <section class="stats-grid">
-      <div class="stat-card"><div class="stat-value">{{ summary.total_jobs if summary else '1,000' }}</div><div class="stat-label">Total Jobs</div></div>
-      <div class="stat-card"><div class="stat-value">${{ "{:,}".format(summary.avg_salary|int if summary and summary.avg_salary else 89500) }}</div><div class="stat-label">Average Salary</div></div>
-      <div class="stat-card"><div class="stat-value">{{ top_skills|length if top_skills else '25' }}</div><div class="stat-label">Skills Tracked</div></div>
-      <div class="stat-card"><div class="stat-value" style="color:var(--accent)">Live</div><div class="stat-label">Data Status</div></div>
-    </section>
-
-    <section class="charts-grid">
-      <article class="panel">
-        <h3>🔥 Top Skills Demand</h3>
-        <div class="chart-wrap"><canvas id="skillsChart"></canvas></div>
-      </article>
-      <article class="panel">
-        <h3>📊 Skill Distribution</h3>
-        <div class="chart-wrap"><canvas id="distributionChart"></canvas></div>
-      </article>
-    </section>
-
-    <h2 class="section-title">💻 Most In‑Demand Technologies</h2>
-    <section class="skills-grid">
-      <div class="skills-list">
-        {% if top_skills %}
-          {% for skill in top_skills[:12] %}
-            <div class="skill-item"><span>{{ skill.skill }}</span><span>{{ skill.job_count }} jobs</span></div>
-          {% endfor %}
-        {% else %}
-          <div class="skill-item"><span>Python</span><span>245 jobs</span></div>
-          <div class="skill-item"><span>JavaScript</span><span>203 jobs</span></div>
-          <div class="skill-item"><span>React</span><span>178 jobs</span></div>
-          <div class="skill-item"><span>AWS</span><span>156 jobs</span></div>
-          <div class="skill-item"><span>Node.js</span><span>134 jobs</span></div>
-          <div class="skill-item"><span>SQL</span><span>123 jobs</span></div>
-        {% endif %}
+  <main id="home" class="hero container reveal">
+    <section>
+      <h1>Full‑Stack Developer crafting useful, fast, and secure web apps.</h1>
+      <p class="subtitle">Python • Java • FastAPI • Spring • SQL • Cloud — building data‑driven products with modern UX.</p>
+      <div class="cta">
+        <a href="#projects" class="btn primary"><i class="fa-solid fa-eye"></i> View My Work</a>
+        <a href="#contact" class="btn"><i class="fa-solid fa-paper-plane"></i> Contact</a>
       </div>
     </section>
   </main>
 
-  <footer>
-    <div class="container">© <span id="year"></span> Job Market Intelligence • Built for speed & clarity</div>
+  <section id="about" class="section container reveal">
+    <h2 class="section-title">About Me</h2>
+    <div class="card about-card">
+      <div class="avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></div>
+      <div>
+        <p class="lead">I’m a CS student and full‑stack developer who loves turning messy datasets and real‑world constraints into clean, fast web apps. I ship quickly, write maintainable code, and iterate with user feedback.</p>
+        <p class="muted">Currently seeking internship opportunities where I can contribute to meaningful projects while levelling up in backend, data, and cloud.</p>
+        <div class="skills">
+          <span class="tag">Python</span><span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">FastAPI</span><span class="tag">JavaScript</span><span class="tag">HTML/CSS</span><span class="tag">SQLAlchemy</span><span class="tag">Chart.js</span><span class="tag">Database Design</span><span class="tag">Data Analysis</span><span class="tag">Cloud Deployment</span><span class="tag">Git/GitHub</span><span class="tag">REST APIs</span><span class="tag">Jinja2</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="section container reveal">
+    <h2 class="section-title">Featured Projects</h2>
+    <div class="grid projects">
+      <!-- Project 1 -->
+      <article class="project">
+        <div class="thumb"><i class="fas fa-chart-bar" aria-hidden="true"></i></div>
+        <div class="body">
+          <h3>Job Market Intelligence Platform</h3>
+          <p class="muted">Analytics platform for 1,000+ tech job postings with salary trends, in‑demand skills, and interactive charts.</p>
+          <div class="tech"><span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">SQLAlchemy</span><span class="chip">Chart.js</span><span class="chip">Jinja2</span><span class="chip">Railway</span></div>
+          <div class="links">
+            <a class="btn primary" href="https://job-market-platform-production.up.railway.app" target="_blank" rel="noopener">Live Demo <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            <a class="btn" href="https://github.com/LoganSimba/job-market-platform" target="_blank" rel="noopener"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+      </article>
+      <!-- Project 2 -->
+      <article class="project">
+        <div class="thumb"><i class="fas fa-university" aria-hidden="true"></i></div>
+        <div class="body">
+          <h3>Banking Management System</h3>
+          <p class="muted">Spring Boot app with accounts, transactions, and a clean UI. Deployed to Railway with CI/CD.</p>
+          <div class="tech"><span class="chip">Spring Boot</span><span class="chip">Java</span><span class="chip">Thymeleaf</span><span class="chip">H2</span><span class="chip">Railway</span><span class="chip">Bootstrap</span></div>
+          <div class="links">
+            <a class="btn primary" href="https://springboot-bankmanagementsystem-production.up.railway.app/" target="_blank" rel="noopener">Live Demo <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            <a class="btn" href="https://github.com/LoganSimba/springboot-BankManagementSystem" target="_blank" rel="noopener"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+      </article>
+      <!-- Project 3 -->
+      <article class="project">
+        <div class="thumb"><i class="fas fa-code" aria-hidden="true"></i></div>
+        <div class="body">
+          <h3>Portfolio Website</h3>
+          <p class="muted">Responsive portfolio with animations and mobile‑first layout.</p>
+          <div class="tech"><span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">JavaScript</span><span class="chip">Responsive</span></div>
+          <div class="links">
+            <a class="btn primary" href="#" aria-disabled="true">Live Demo</a>
+            <a class="btn" href="#" aria-disabled="true"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="contact" class="section container reveal contact">
+    <h2 class="section-title">Let’s Connect</h2>
+    <p class="lead">I’m actively seeking internship opportunities and would love to talk about how I can help your team ship faster.</p>
+    <div class="contact-list" role="list">
+      <a class="contact-item" href="mailto:logansimba77@gmail.com"><i class="fas fa-envelope"></i> <span>logansimba77@gmail.com</span></a>
+      <a class="contact-item" href="https://www.linkedin.com/in/logan-simba-9b40b2348/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> <span>LinkedIn</span></a>
+      <a class="contact-item" href="https://github.com/LoganSimba" target="_blank" rel="noopener"><i class="fab fa-github"></i> <span>GitHub</span></a>
+    </div>
+  </section>
+
+  <footer class="center muted" style="padding:40px 0; border-top:1px solid var(--stroke); background: color-mix(in oklab, var(--bg) 80%, transparent);">
+    <div class="container">© <span id="year"></span> Logan Simba. Built with semantic HTML, accessible components, and zero frameworks.</div>
   </footer>
 
-  <noscript><div style="text-align:center;padding:8px;background:#222;color:#fff">Enable JavaScript to view charts.</div></noscript>
-
   <script>
-    // Theme toggle + persistence (respects system preference on first visit)
-    const root = document.documentElement;
-    try {
-      const stored = localStorage.getItem('theme');
-      if (!stored) {
-        const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-        root.setAttribute('data-theme', prefersLight ? 'light' : 'dark');
-      } else root.setAttribute('data-theme', stored);
-    } catch (e) {}
-    document.getElementById('themeBtn').addEventListener('click', () => {
-      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      root.setAttribute('data-theme', next);
-      try { localStorage.setItem('theme', next); } catch (e) {}
+    // Smooth scroll without breaking hash behavior
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        const el = document.querySelector(id);
+        if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); history.replaceState(null, '', id); }
+      });
     });
+
+    // Theme toggle (persists)
+    const root = document.documentElement;
+    const saved = localStorage.getItem('theme');
+    if (saved) root.setAttribute('data-theme', saved);
+    document.getElementById('themeBtn').addEventListener('click', () => {
+      const cur = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', cur);
+      localStorage.setItem('theme', cur);
+    });
+
+    // Mobile menu
+    const menuBtn = document.querySelector('.menu-toggle');
+    const nav = document.getElementById('nav');
+    menuBtn.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open);
+    });
+
+    // Reveal on scroll (lightweight)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
     // Year
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Data prep from Jinja/Fallback
-    {% if top_skills %}
-    const skillData = [
-      {% for skill in top_skills[:6] %}{ name: "{{ skill.skill }}", count: {{ skill.job_count }} }{% if not loop.last %},{% endif %}{% endfor %}
-    ];
-    {% else %}
-    const skillData = [
-      {name: 'Python', count: 245}, {name: 'JavaScript', count: 203}, {name: 'React', count: 178},
-      {name: 'AWS', count: 156}, {name: 'Node.js', count: 134}, {name: 'SQL', count: 123}
-    ];
-    {% endif %}
-
-    const colors = ['#7aa2ff','#8a5cff','#f093fb','#f5576c','#4facfe','#00f2fe'];
-
-    function safeChart(ctx, cfg){
-      try { return new Chart(ctx, cfg); } catch (e) { console.error('Chart init failed', e); }
-    }
-
-    // Doughnut
-    safeChart(document.getElementById('skillsChart'), {
-      type: 'doughnut',
-      data: { labels: skillData.map(s=>s.name), datasets: [{ data: skillData.map(s=>s.count), backgroundColor: colors, hoverOffset: 8, borderWidth: 0 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle:true, padding: 12 } } } }
-    });
-
-    // Bar
-    safeChart(document.getElementById('distributionChart'), {
-      type: 'bar',
-      data: { labels: skillData.map(s=>s.name), datasets: [{ label: 'Job Count', data: skillData.map(s=>s.count), backgroundColor: colors, borderRadius: 8, borderSkipped: false }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } }
-    });
   </script>
 </body>
 </html>
